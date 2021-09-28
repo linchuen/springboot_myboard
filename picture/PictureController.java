@@ -2,6 +2,7 @@ package Land.Development.Agency.myboard.picture;
 
 import Land.Development.Agency.myboard.uploadfile.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,30 +16,31 @@ public class PictureController {
     private UploadService uploadService;
 
     @PostMapping(value = "/picture")
-    public void uploadPicture(@RequestParam("image") MultipartFile multipartFile){
-        if(uploadService.uploadPicture(multipartFile)){
-            Picture newPicture=new Picture(multipartFile.getOriginalFilename());
-            pictureService.createNewPicture(newPicture);
+    public ResponseEntity uploadPicture(@RequestParam("image") MultipartFile multipartFile) {
+        if (uploadService.uploadPicture(multipartFile)) {
+            Picture newPicture = new Picture(multipartFile.getOriginalFilename());
+            return pictureService.createNewPicture(newPicture);
         }
+        return ResponseEntity.badRequest().body("create error");
     }
 
     @GetMapping("picture/all")
-    public List<Picture> getAllPicture(){
+    public List<Picture> getAllPicture() {
         return pictureService.getAllPicture();
     }
 
     @GetMapping("picture")
-    public List<Picture> getEnabledPicture(){
+    public List<Picture> getEnabledPicture() {
         return pictureService.getEnabledPicture();
     }
 
     @PutMapping("picture/{id}")
-    public Picture updatePicture(@PathVariable String id,@RequestBody Picture picture){
-        return pictureService.updatePicture(id,picture);
+    public ResponseEntity updatePicture(@PathVariable String id, @RequestBody Picture picture) {
+        return pictureService.updatePicture(id, picture);
     }
 
     @DeleteMapping("picture/{id}")
-    public void deletePicture(@PathVariable String id){
-        pictureService.deletePicture(id);
+    public ResponseEntity deletePicture(@PathVariable String id) {
+        return pictureService.deletePicture(id);
     }
 }

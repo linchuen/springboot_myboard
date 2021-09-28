@@ -1,8 +1,8 @@
 package Land.Development.Agency.myboard.text;
 
-import Land.Development.Agency.myboard.video.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,28 +12,28 @@ public class TextController {
     @Autowired
     private TextService textService;
 
-    @PostMapping(value = "/text",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Text uploadText(@RequestBody Text text){
+    @PostMapping(value = "/text", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity uploadText(@RequestBody Text text) {
         return textService.createNewText(text);
     }
 
     @GetMapping("text/all")
-    public List<Text> getAllText(){
+    public List<Text> getAllText() {
         return textService.getAllText();
     }
 
     @GetMapping("text")
-    public List<Text> getEnabledText(){
+    public List<Text> getEnabledText() {
         return textService.getEnabledText();
     }
 
     @PutMapping("text/{id}")
-    public Text updateText(@PathVariable String id,@RequestBody Text text){
-        return textService.updateText(id,text);
+    public ResponseEntity updateText(@PathVariable String id, @RequestBody Text text) {
+        return textService.updateText(id, text);
     }
 
     @DeleteMapping("text/{id}")
-    public void deleteText(@PathVariable String id){
-        textService.deleteText(id);
+    public ResponseEntity deleteText(@PathVariable String id) {
+        return textService.deleteText(id);
     }
 }
