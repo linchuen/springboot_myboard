@@ -35,9 +35,10 @@ public class TextService {
             text.setId(textRepository.findById(id).get().getId());
             text.setCreateAt(textRepository.findById(id).get().getCreateAt());
             textRepository.save(text);
-            ResponseEntity.ok().body(text);
+            return ResponseEntity.ok().body(text);
+        }else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity deleteText(String id) {

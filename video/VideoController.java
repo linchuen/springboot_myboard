@@ -20,8 +20,9 @@ public class VideoController {
         if (uploadService.uploadVideo(multipartFile)) {
             Video newVideo = new Video(multipartFile.getOriginalFilename());
             return videoService.createNewVideo(newVideo);
+        }else{
+            return ResponseEntity.badRequest().body("create error");
         }
-        return ResponseEntity.badRequest().body("create error");
     }
 
     @GetMapping("video/all")

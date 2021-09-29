@@ -37,9 +37,10 @@ public class PictureService {
             picture.setId(pictureRepository.findById(id).get().getId());
             picture.setCreateAt(pictureRepository.findById(id).get().getCreateAt());
             pictureRepository.save(picture);
-            ResponseEntity.ok().body(picture);
+            return ResponseEntity.ok().body(picture);
+        }else{
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity deletePicture(String id) {

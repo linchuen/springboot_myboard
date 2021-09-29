@@ -20,8 +20,9 @@ public class PictureController {
         if (uploadService.uploadPicture(multipartFile)) {
             Picture newPicture = new Picture(multipartFile.getOriginalFilename());
             return pictureService.createNewPicture(newPicture);
+        }else{
+            return ResponseEntity.badRequest().body("create error");
         }
-        return ResponseEntity.badRequest().body("create error");
     }
 
     @GetMapping("picture/all")

@@ -39,7 +39,6 @@ public class UploadService {
         String videoType=multipartFile.getContentType();
         if (!multipartFile.isEmpty()) {
             System.out.println(videoType);
-
                 try {
                     File directory = new File(UPLOAD_DIRECTORY);
                     if (!directory.exists()){
