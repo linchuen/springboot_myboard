@@ -23,8 +23,12 @@ public class Picture {
     private Date expiredAt;
     private Boolean enabled;
 
-    public Picture(String filename){
+    public Picture(String filename,String createAt, Date startAt, Date expiredAt, Boolean enabled){
         this.filename=filename;
+        this.createAt=createAt;
+        this.startAt=startAt;
+        this.expiredAt=expiredAt;
+        this.enabled=enabled;
     }
     public Picture(String filename, Date startAt, Date expiredAt, Boolean enabled){
         this.filename=filename;

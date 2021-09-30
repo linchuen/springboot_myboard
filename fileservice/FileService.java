@@ -1,4 +1,4 @@
-package Land.Development.Agency.myboard.uploadfile;
+package Land.Development.Agency.myboard.fileservice;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.Objects;
 
 @Service
-public class UploadService {
+public class FileService {
     @Value("${web.upload-path}")
     String UPLOAD_DIRECTORY;
 
@@ -38,20 +38,34 @@ public class UploadService {
     public Boolean uploadVideo(MultipartFile multipartFile){
         String videoType=multipartFile.getContentType();
         if (!multipartFile.isEmpty()) {
-            System.out.println(videoType);
+            if(Objects.equals(videoType, "video/mp4")||
+                    Objects.equals(videoType, "video/ogg")||
+                    Objects.equals(videoType, "video/webm")) {
                 try {
                     File directory = new File(UPLOAD_DIRECTORY);
-                    if (!directory.exists()){
+                    if (!directory.exists()) {
                         directory.mkdirs();
                     }
-                    String filepath=UPLOAD_DIRECTORY.concat(multipartFile.getOriginalFilename());
+                    String filepath = UPLOAD_DIRECTORY.concat(multipartFile.getOriginalFilename());
                     multipartFile.transferTo(new File(filepath));
                     return true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+            }
         }
         return false;
+    }
+    public boolean renameFile(String originFilename,String newFilename){
+        File file=new File(UPLOAD_DIRECTORY.concat(originFilename));
+        if (file.exists()){
+            file.renameTo(new File(UPLOAD_DIRECTORY.concat(newFilename)));
+            return true;
+        }return false;
+    }
+
+    public boolean deleteFile(String filename){
+        File file=new File(UPLOAD_DIRECTORY.concat(filename));
+        return file.delete();
     }
 }

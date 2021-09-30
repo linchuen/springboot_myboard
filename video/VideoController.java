@@ -1,11 +1,12 @@
 package Land.Development.Agency.myboard.video;
 
-import Land.Development.Agency.myboard.uploadfile.UploadService;
+import Land.Development.Agency.myboard.fileservice.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -13,16 +14,12 @@ public class VideoController {
     @Autowired
     private VideoService videoService;
     @Autowired
-    private UploadService uploadService;
+    private FileService fileService;
 
     @PostMapping(value = "/video")
-    public ResponseEntity uploadVideo(@RequestParam("video") MultipartFile multipartFile) {
-        if (uploadService.uploadVideo(multipartFile)) {
-            Video newVideo = new Video(multipartFile.getOriginalFilename());
-            return videoService.createNewVideo(newVideo);
-        }else{
-            return ResponseEntity.badRequest().body("create error");
-        }
+    public ResponseEntity uploadVideo(@RequestParam("video") MultipartFile multipartFile,@RequestParam("startAt") Date startAt
+            ,@RequestParam("expiredAt") Date expiredAt) {
+        return videoService.createNewVideo(multipartFile,startAt,expiredAt);
     }
 
     @GetMapping("video/all")

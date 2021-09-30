@@ -23,8 +23,12 @@ public class Video {
     private Date expiredAt;
     private Boolean enabled;
 
-    public Video(String filename){
+    public Video(String filename,String createAt, Date startAt, Date expiredAt, Boolean enabled){
         this.filename=filename;
+        this.createAt=createAt;
+        this.startAt=startAt;
+        this.expiredAt=expiredAt;
+        this.enabled=enabled;
     }
     public Video(String filename, Date startAt, Date expiredAt, Boolean enabled){
         this.filename=filename;

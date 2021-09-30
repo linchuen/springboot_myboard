@@ -1,11 +1,12 @@
 package Land.Development.Agency.myboard.picture;
 
-import Land.Development.Agency.myboard.uploadfile.UploadService;
+import Land.Development.Agency.myboard.fileservice.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -13,16 +14,12 @@ public class PictureController {
     @Autowired
     private PictureService pictureService;
     @Autowired
-    private UploadService uploadService;
+    private FileService fileService;
 
     @PostMapping(value = "/picture")
-    public ResponseEntity uploadPicture(@RequestParam("image") MultipartFile multipartFile) {
-        if (uploadService.uploadPicture(multipartFile)) {
-            Picture newPicture = new Picture(multipartFile.getOriginalFilename());
-            return pictureService.createNewPicture(newPicture);
-        }else{
-            return ResponseEntity.badRequest().body("create error");
-        }
+    public ResponseEntity uploadPicture(@RequestParam("image") MultipartFile multipartFile,@RequestParam("startAt") Date startAt
+            ,@RequestParam("expiredAt") Date expiredAt) {
+        return pictureService.createNewPicture(multipartFile,startAt,expiredAt);
     }
 
     @GetMapping("picture/all")
