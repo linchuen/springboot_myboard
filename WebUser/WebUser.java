@@ -19,15 +19,15 @@ import java.util.Collections;
 public class WebUser implements UserDetails {
     @Id
     private String id;
-    private String userName;
+    private String username;
     private String email;
     private String password;
     private WebUserRole webUserRole;
     private Boolean locked = false;
     private Boolean enabled = true;
 
-    public WebUser(String userName, String email, String password, WebUserRole webUserRole) {
-        this.userName = userName;
+    public WebUser(String username, String email, String password, WebUserRole webUserRole) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.webUserRole = webUserRole;
@@ -46,7 +46,7 @@ public class WebUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override

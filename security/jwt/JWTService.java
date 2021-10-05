@@ -1,5 +1,6 @@
 package Land.Development.Agency.myboard.security.jwt;
 
+import Land.Development.Agency.myboard.WebUser.WebUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -19,19 +20,21 @@ import java.util.stream.Collectors;
 public class JWTService {
     @Autowired
     private AuthenticationManager authenticationManager;
-    private final String KEY = "ReactCombineSpringBootWithJWT";
+    private final String KEY = "SpringBootCombineReactAsFrontendWithJWTForAccessControll";
 
     public String generateToken(AccessRequest accessRequest) {
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(accessRequest.getUsername(), accessRequest.getPassword());
         authentication = authenticationManager.authenticate(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        WebUser userDetails = (WebUser) authentication.getPrincipal();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 2);
+        calendar.add(Calendar.MINUTE,2);
 
         Claims claims = Jwts.claims();
-        claims.put("username", userDetails.getUsername());
+        claims.put("username",userDetails.getUsername());
+        claims.put("email", userDetails.getEmail());
+        claims.setIssuedAt(Calendar.getInstance().getTime());
         claims.setExpiration(calendar.getTime());
         claims.setIssuer("Myboard project");
 

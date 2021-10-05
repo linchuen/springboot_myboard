@@ -13,11 +13,15 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private JWTRequestFilter jwtRequestFilter;
     @Autowired
     private DaoAuthenticationProvider daoAuthenticationProvider;
     @Autowired
@@ -37,21 +41,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         if (!webUserRepository.findByEmail(admin.getEmail()).isPresent()) {
             webUserRepository.save(admin);
         }
-        WebUser normal = new WebUser("normal", "aidenlin07@gmail.com", "root123", WebUserRole.USER);
-        normal.setPassword(bCryptPasswordEncoder.encode(normal.getPassword()));
-        if (!webUserRepository.findByEmail(normal.getEmail()).isPresent()) {
-            webUserRepository.save(normal);
-        }
 
         http
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/admin").hasAuthority(WebUserRole.ADMIN.name())
-                .antMatchers("/manage").hasAuthority(WebUserRole.ADMIN.name())
-                .antMatchers(HttpMethod.GET).permitAll()
-                .anyRequest().permitAll()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().successForwardUrl("/");
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin();
     }
 
     @Override
