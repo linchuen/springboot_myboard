@@ -24,7 +24,7 @@ public class WebUser implements UserDetails {
     private String password;
     private WebUserRole webUserRole;
     private Boolean locked = false;
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     public WebUser(String username, String email, String password, WebUserRole webUserRole) {
         this.username = username;
