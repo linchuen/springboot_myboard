@@ -36,12 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        WebUser admin = new WebUser("Aiden", "x29587629@gmail.com", "root123", WebUserRole.ADMIN);
-        admin.setPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
-        if (!webUserRepository.findByEmail(admin.getEmail()).isPresent()) {
-            webUserRepository.save(admin);
-        }
-
         http
                 .csrf().disable()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

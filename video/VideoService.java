@@ -21,7 +21,6 @@ public class VideoService {
     private FileService fileService;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
 
-    @Transactional
     public ResponseEntity createNewVideo(MultipartFile multipartFile,Date startAt,Date expiredAt) {
         if(fileService.uploadVideo(multipartFile)){
             String filename=multipartFile.getOriginalFilename();

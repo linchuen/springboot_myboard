@@ -1,10 +1,13 @@
 package Land.Development.Agency.myboard.text;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Getter
@@ -15,11 +18,11 @@ import java.util.Date;
 public class Text {
     @Id
     private String id;
+    @NotNull
+    @Length(min = 1, max = 200)
     private String filename;
     private String createAt;
-    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Date startAt;
-    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     private Date expiredAt;
     private Boolean enabled;
 
